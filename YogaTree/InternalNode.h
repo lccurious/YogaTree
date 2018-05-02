@@ -229,6 +229,7 @@ inline int InternalNode<ChildT, Log2Dim>::Light(Coord xyz)
 	else 
 	{
 		child = new ChildT(xyz, mNodes[n].getValue());
+		onLeafCount++;
 		this->setChildNode(n, child);
 		// Add LeafNode Light return update local onvoxelNum
 		deltaVoxelNum = child->Light(xyz);

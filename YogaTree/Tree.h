@@ -51,6 +51,7 @@ public:
     using ValueType = typename RootNodeType::ValueType;
     using BuildType = typename RootNodeType::BuildType;
     using LeafNodeType = typename RootNodeType::LeafNodeType;
+	using RootCIter = typename RootNodeType::MapCIter;
 
     static const Index DEPTH = RootNodeType::LEVEL + 1;
 
@@ -66,6 +67,23 @@ public:
     ///
     /// @param coord The coordinate.
     void Light(Coord coord) { mRoot.Light(coord); }
+
+	/// Print all coordinate witch were light in the tree
+	///
+	/// @author Peo
+	/// @date 2018/5/2
+	///
+	/// @return An int.
+
+	int printAllCoord();
+
+	/// Reform tree iterate the whole tree, subsitute the dense node with
+	/// a constant value.
+	///
+	/// @author Peo
+	/// @date 2018/5/2
+
+	void reformTree();
 
     //
     // Statistics
@@ -87,6 +105,20 @@ template<typename _RootNodeType>
 inline Tree<_RootNodeType>::~Tree()
 {
 	mRoot.clear();
+}
+
+template<typename _RootNodeType>
+int Tree<_RootNodeType>::printAllCoord()
+{
+	// TODO: add iteration method to print out all coordinates in tree
+	return 0;
+}
+
+template<typename _RootNodeType>
+void Tree<_RootNodeType>::reformTree()
+{
+	// TODO: add iteration method to check all node registed in tree, subsitude with constant
+	mRoot.reformRoot();
 }
 
 /// @brief Tree3<T, N1, N2>::Type is the type of a three-level tree

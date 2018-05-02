@@ -135,6 +135,8 @@ public:
 
     Index32 leafCount() const;
 
+	void reformRoot();
+
 
 private:
     unsigned int    voxelNum    = 0;
@@ -260,5 +262,24 @@ RootNode<ChildT>::leafCount() const
         if (isChild(i)) sum += getChild(i).leafCount();
     }
     return sum;
+}
+
+template<typename ChildType>
+void RootNode<ChildType>::reformRoot()
+{
+	Index64 delInternalNum = 0;
+	Index64 delLeafNum = 0;
+	Index64 delKeyNum = 0;
+	for (MapCIter i = mTable.begin(); i != mTable.end(); i++) {
+		// std::cout << i->second.child << std::endl;
+		std::cout << "[" << i->first.x() << ", "
+			<< i->first.y() << ", "
+			<< i->first.z() << "]" << "\t";
+
+		if (i->second.child) {
+			// std::cout << "Is Dense: " << i->second.child->isDense() ? "True" : "False";
+			std::cout << "Leaf Count: " << i->second.child->leafCount() << std::endl;
+		}
+	}
 }
 

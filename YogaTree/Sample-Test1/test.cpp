@@ -124,5 +124,8 @@ TEST_F(TreeTest, Traverse)
 			testTree.Light(coord);
 		}
 	}
+
+	testTree.reformTree();
+
 	std::cout << "Voxel Number: " << testTree.mRoot.onVoxelCount() << std::endl;
 }
