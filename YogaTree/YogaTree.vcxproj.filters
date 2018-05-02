@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\util">
+      <UniqueIdentifier>{0c720b02-57e7-448a-89c2-7f3621d6466b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\viewer">
+      <UniqueIdentifier>{86675d36-2f57-47a2-87f1-6ecf7a68a87c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\tree">
+      <UniqueIdentifier>{1a1551ff-cd0e-4d56-81bd-d82149147ae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\io">
+      <UniqueIdentifier>{ff9d2175-4959-4721-a834-9cc9e6c94ede}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\viewer">
+      <UniqueIdentifier>{eac5b504-a153-4efc-ba11-298bb1dcf9d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\util">
+      <UniqueIdentifier>{58c2903c-4dbe-41d8-bf5d-d2aa1e3012bc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Coord.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalNode.h">
+      <Filter>头文件\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="LeafNode.h">
+      <Filter>头文件\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="Mask.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="Name.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeMasks.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeUnion.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="RootNode.h">
+      <Filter>头文件\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="TiffIn.h">
+      <Filter>头文件\io</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>头文件\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="Viewer.h">
+      <Filter>头文件\viewer</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Metadata.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="Show.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="YogaTree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="YogaTree.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Viewer.cc">
+      <Filter>源文件\viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="Metadata.cc">
+      <Filter>源文件\util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="..\README.md" />
+  </ItemGroup>
+</Project>
