@@ -44,7 +44,6 @@ public:
 
     LeafNode(T allocatedKey) {
         mainKey = allocatedKey;
-        
     }
 
     explicit LeafNode(const Coord& coords, const ValueType& value);
@@ -74,16 +73,36 @@ public:
     // return the first key, keep it for generation
     T frontKey() const { return mainKey; }
 
+	void printNode() {
+		for (int i = 0; i < voxelStatsSize; i++) {
+			printf("%X\t", voxelStats[i]);
+		}
+		printf("\n");
+	}
+
     /// Light the voxel in key location
     /// \param key the offset transformed from the local coordinate.
     int Light(const Coord xyz) {
         Index lightOffset = coordToOffset(xyz);
         uint8_t xAxis = (xyz.x() & ((1u << sLog2X) - 1u));
+
+		std::cout << "Node: ["
+			<< xyz.x() << ", "
+			<< xyz.y() << ", "
+			<< xyz.z() << "]: ";
+
         if (!(voxelStats[(lightOffset>>sLog2X)] & (1u<<xAxis))) {
             voxelStats[(lightOffset>>sLog2X)] |= (1u<<xAxis);
             onVoxelNum++;
+
+			printf("+voxelStatus[%d : %d]:\t%X\n", (lightOffset >> sLog2X), xAxis, voxelStats[(lightOffset >> sLog2X)]);
+
 			return 1;
         }
+		else
+		{
+			printf("-voxelStatus[%d : %d]:\t%X\n", (lightOffset >> sLog2X), xAxis, voxelStats[(lightOffset >> sLog2X)]);
+		}
 		return 0;
     }
 
@@ -95,13 +114,24 @@ public:
         if(voxelStats[(lightOffset>>sLog2X)] & (1u<<xAxis)) {
            voxelStats[(lightOffset>>sLog2X)] &= ~(1u<<xAxis);
            onVoxelNum--;
+		   return 1;
         }
+		return 0;
     }
 
     /// If the LeafNode here is Dense then Internal mark Cube here with only
     /// one value and this Leaf could be delete
     /// \return isDense;
-    bool isDense() { return onVoxelNum == sSize; }
+    bool isDense() { 
+		std::cout << "Node: ["
+			<< mOrigin.x() << ", "
+			<< mOrigin.y() << ", "
+			<< mOrigin.z() << "]: "
+			<< onVoxelNum << " Voxel On"
+			<< std::endl;
+		return onVoxelNum == sSize; 
+	}
+
 
     /// It the LeafNode here is Empty then subsititude pointer in InternalNode
     /// with one background value
@@ -120,6 +150,10 @@ public:
     void addLeaf(LeafNode*) {}
     //@}
 
+	/// no reform need in LeafNode, It can be delete and subditude with
+	/// parent node
+	int reform();
+
 protected:
     ///
     /// \brief mOrigin is global index of this Leaf
@@ -132,6 +166,8 @@ private:
     unsigned int offset;
     T mainKey;
     LeafNodeType* SiblingPtrUp = nullptr;
+
+	bool CLEARED;
 
     /// transform local coordinate to offset
     /// \param x
@@ -147,6 +183,7 @@ private:
     static const int sLog2X = Log2Dim,
             sLog2Y=Log2Dim,
             sLog2Z=Log2Dim,
+			voxelStatsSize = 1 << (sLog2Z + sLog2Y),
             sSize = 1 << (sLog2X+sLog2Y+sLog2Z);
 
     // indicate the voxel cube state
@@ -156,11 +193,17 @@ private:
 template<typename T, Index Log2Dim>
 inline LeafNode<T, Log2Dim>::LeafNode(const Coord & coord, const ValueType & value) 
 	:mOrigin(coord[0] & ~(DIM-1), coord[1] & ~(DIM-1), coord[2] & ~(DIM-1)), 
-	voxelStats(new uint8_t[sSize])
+	voxelStats(new uint8_t[voxelStatsSize])
 {
-	for (int i = 0; i < sSize; ++i) {
+	for (int i = 0; i < voxelStatsSize; ++i) {
 		voxelStats[i] = 0;
 	}
+}
+
+template<typename T, Index Log2Dim>
+int LeafNode<T, Log2Dim>::reform()
+{
+	return 0;
 }
 
 template<typename T, Index Log2Dim>
@@ -168,9 +211,9 @@ inline Index
 LeafNode<T, Log2Dim>::coordToOffset(const Coord& xyz)
 {
     assert ((xyz[0] & (DIM-1u)) < DIM && (xyz[1] & (DIM-1u)) < DIM && (xyz[2] & (DIM-1u)) < DIM);
-    return ((xyz[0] & (DIM-1u)) << 2*Log2Dim)
+    return ((xyz[2] & (DIM-1u)) << 2*Log2Dim)
          + ((xyz[1] & (DIM-1u)) << Log2Dim)
-         +  (xyz[2] & (DIM-1u));
+         +  (xyz[0] & (DIM-1u));
 }
 
 template<typename T, Index Log2Dim>

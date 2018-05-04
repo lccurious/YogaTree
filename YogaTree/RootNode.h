@@ -279,6 +279,10 @@ void RootNode<ChildType>::reformRoot()
 		if (i->second.child) {
 			// std::cout << "Is Dense: " << i->second.child->isDense() ? "True" : "False";
 			std::cout << "Leaf Count: " << i->second.child->leafCount() << std::endl;
+			i->second.child->reform();
+			if (i->second.child->isDense()) {
+				std::cout << "Find Node can be delete" << std::endl;
+			}
 		}
 	}
 }

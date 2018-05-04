@@ -33,7 +33,7 @@ public:
     InternalNode();
     ~InternalNode();
 
-    explicit InternalNode(const ValueType& offValue);
+    // explicit InternalNode(const ValueType& offValue);
 
     InternalNode(const Coord& origin, const ValueType& fillValue);
 
@@ -81,12 +81,21 @@ public:
     const Coord& origin() const { return mOrigin; }
 
     Index32 leafCount() const;
+	bool isDense() { return ISDENSE; }
+
+	/// check the node dense status and subsitude the dense node with constant
+	int reform();
 
 private:
     int onVoxelNum = 0;
     int offVoxelNum = 0;
     int voxelNum = 0;
     Index32 onLeafCount = 0;
+	Index32 DenseNum = 0;
+	// No need to change because voxel represented by bool
+	ValueType LIGHT_VALUE = 1;
+
+	bool ISDENSE = false;
 
     UnionType mNodes[NUM_VALUES];
     Coord mOrigin;
@@ -197,9 +206,9 @@ template<typename ChildT, Index Log2Dim>
 inline Index
 InternalNode<ChildT, Log2Dim>::coordToOffset(const Coord& xyz)
 {
-    return (((xyz[0] & (DIM-1u)) >> ChildNodeType::TOTAL) << 2*Log2Dim)
+    return (((xyz[2] & (DIM-1u)) >> ChildNodeType::TOTAL) << 2*Log2Dim)
         +  (((xyz[1] & (DIM-1u)) >> ChildNodeType::TOTAL) <<   Log2Dim)
-        +   ((xyz[2] & (DIM-1u)) >> ChildNodeType::TOTAL);
+        +   ((xyz[0] & (DIM-1u)) >> ChildNodeType::TOTAL);
 }
 
 template<typename ChildT, Index Log2Dim>
@@ -265,4 +274,31 @@ inline Index32
 InternalNode<ChildT, Log2Dim>::leafCount() const
 {
     return onLeafCount;
+}
+
+template<typename _ChildNodeType, Index Log2Dim>
+int InternalNode<_ChildNodeType, Log2Dim>::reform()
+{
+	for (int i = 0; i < NUM_VALUES; i++) {
+		if (mNodes[i].getChild() == nullptr) {
+			continue;
+		}
+		if (mNodes[i].getChild()->isDense()) {
+			// TODO:delete the ChildNode
+			mNodes[i].getChild()->printNode();
+			// mNodes[i].setValue(LIGHT_VALUE);
+			DenseNum++;
+
+			std::cout << "Node: ["
+				<< mOrigin.x() << ", "
+				<< mOrigin.y() << ", "
+				<< mOrigin.z() << "]: "
+				<< DenseNum << "Should be deleted"
+				<< std::endl;
+		}
+	}
+	if (DenseNum == NUM_VALUES) {
+		ISDENSE = true;
+	}
+	return 0;
 }
