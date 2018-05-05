@@ -284,17 +284,19 @@ int InternalNode<_ChildNodeType, Log2Dim>::reform()
 			continue;
 		}
 		if (mNodes[i].getChild()->isDense()) {
-			// TODO:delete the ChildNode
-			mNodes[i].getChild()->printNode();
+			// TODO:delete the ChildNode And replace with constant.
+			// mNodes[i].getChild()->printNode();
+			mNodes[i].getChild()->deAllocate();
 			// mNodes[i].setValue(LIGHT_VALUE);
 			DenseNum++;
-
+			
 			std::cout << "Node: ["
 				<< mOrigin.x() << ", "
 				<< mOrigin.y() << ", "
 				<< mOrigin.z() << "]: "
-				<< DenseNum << "Should be deleted"
+				<< DenseNum << "\tHas been deleted"
 				<< std::endl;
+			
 		}
 	}
 	if (DenseNum == NUM_VALUES) {

@@ -50,6 +50,15 @@ public:
 
 	~LeafNode() { delete[] voxelStats; }
 
+	bool deAllocate() {
+		if (voxelStats != nullptr) {
+			delete[] voxelStats;
+			voxelStats = nullptr;
+			return true;
+		}
+		return false;
+	}
+
     //
     // Statistics
     //
@@ -86,23 +95,27 @@ public:
         Index lightOffset = coordToOffset(xyz);
         uint8_t xAxis = (xyz.x() & ((1u << sLog2X) - 1u));
 
+		/*
 		std::cout << "Node: ["
 			<< xyz.x() << ", "
 			<< xyz.y() << ", "
 			<< xyz.z() << "]: ";
+		*/
 
         if (!(voxelStats[(lightOffset>>sLog2X)] & (1u<<xAxis))) {
             voxelStats[(lightOffset>>sLog2X)] |= (1u<<xAxis);
             onVoxelNum++;
 
-			printf("+voxelStatus[%d : %d]:\t%X\n", (lightOffset >> sLog2X), xAxis, voxelStats[(lightOffset >> sLog2X)]);
+			// printf("+voxelStatus[%d : %d]:\t%X\n", (lightOffset >> sLog2X), xAxis, voxelStats[(lightOffset >> sLog2X)]);
 
 			return 1;
         }
+		/*
 		else
 		{
-			printf("-voxelStatus[%d : %d]:\t%X\n", (lightOffset >> sLog2X), xAxis, voxelStats[(lightOffset >> sLog2X)]);
+			// printf("-voxelStatus[%d : %d]:\t%X\n", (lightOffset >> sLog2X), xAxis, voxelStats[(lightOffset >> sLog2X)]);
 		}
+		*/
 		return 0;
     }
 
@@ -123,12 +136,14 @@ public:
     /// one value and this Leaf could be delete
     /// \return isDense;
     bool isDense() { 
+		/*
 		std::cout << "Node: ["
 			<< mOrigin.x() << ", "
 			<< mOrigin.y() << ", "
 			<< mOrigin.z() << "]: "
 			<< onVoxelNum << " Voxel On"
 			<< std::endl;
+		*/
 		return onVoxelNum == sSize; 
 	}
 
