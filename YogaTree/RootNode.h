@@ -285,7 +285,8 @@ void RootNode<ChildType>::reformRoot()
 			*/
 			i->second.child->reform();
 			if (i->second.child->isDense()) {
-				std::cout << "Find Node can be delete" << std::endl;
+				i->second.child->deAllocate();
+				std::cout << "InternalNode has been delete" << std::endl;
 			}
 		}
 	}

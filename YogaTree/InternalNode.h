@@ -83,6 +83,21 @@ public:
     Index32 leafCount() const;
 	bool isDense() { return ISDENSE; }
 
+	bool deAllocate() {
+		std::cout << "InternalNode: ["
+			<< mOrigin[0] << "->" << (mOrigin[0] + DIM) << ", "
+			<< mOrigin[1] << "->" << (mOrigin[1] + DIM) << ", "
+			<< mOrigin[2] << "->" << (mOrigin[2] + DIM) << "]"
+			<< "\t has been deleted" << std::endl;
+
+		if (mNodes != nullptr) {
+			delete[] mNodes;
+			mNodes = nullptr;
+			return true;
+		}
+		return false;
+	}
+
 	/// check the node dense status and subsitude the dense node with constant
 	int reform();
 
@@ -97,7 +112,7 @@ private:
 
 	bool ISDENSE = false;
 
-    UnionType mNodes[NUM_VALUES];
+    UnionType* mNodes;
     Coord mOrigin;
 
     /*union   InternalData    {
@@ -152,7 +167,7 @@ InternalNode<ChildT, Log2Dim>::resetChildNode(Index i, ChildNodeType *child)
  */
 
 template<typename _ChildNodeType, Index Log2Dim>
-inline InternalNode<_ChildNodeType, Log2Dim>::InternalNode(const InternalNode &)
+inline InternalNode<_ChildNodeType, Log2Dim>::InternalNode(const InternalNode &) : mNodes(new UnionType[NUM_VALUES])
 {
 }
 
@@ -174,15 +189,18 @@ inline InternalNode<_ChildNodeType, Log2Dim>::InternalNode(const InternalNode &)
  */
 
 template<typename _ChildNodeType, Index Log2Dim>
-InternalNode<_ChildNodeType, Log2Dim>::InternalNode() {
+InternalNode<_ChildNodeType, Log2Dim>::InternalNode(): mNodes(new UnionType[NUM_VALUES]) {
 
 }
 
 template<typename _ChildNodeType, Index Log2Dim>
 inline InternalNode<_ChildNodeType, Log2Dim>::~InternalNode()
 {
-	for (Index i = 0; i < NUM_VALUES; ++i) {
-		delete mNodes[i].getChild();
+	if (mNodes != nullptr) {
+		for (Index i = 0; i < NUM_VALUES; ++i) {
+			delete mNodes[i].getChild();
+		}
+		delete[] mNodes;
 	}
 }
 
@@ -195,7 +213,8 @@ void InternalNode<_ChildNodeType, Log2Dim>::addInternalNode(
 template<typename _ChildNodeType, Index Log2Dim>
 InternalNode<_ChildNodeType, Log2Dim>
 ::InternalNode(const Coord &origin, const ValueType &fillValue): 
-	mOrigin(origin[0] & ~(DIM-1), origin[1] & ~(DIM-1), origin[2] & ~(DIM-1))
+	mOrigin(origin[0] & ~(DIM-1), origin[1] & ~(DIM-1), origin[2] & ~(DIM-1)),
+	mNodes(new UnionType[NUM_VALUES])
 {
 	for (Index i = 0; i < NUM_VALUES; ++i) {
 		mNodes[i].setValue(fillValue);
@@ -287,16 +306,20 @@ int InternalNode<_ChildNodeType, Log2Dim>::reform()
 			// TODO:delete the ChildNode And replace with constant.
 			// mNodes[i].getChild()->printNode();
 			mNodes[i].getChild()->deAllocate();
+			delete mNodes[i].getChild();
+			mNodes[i].setChild(nullptr);
 			// mNodes[i].setValue(LIGHT_VALUE);
+			
 			DenseNum++;
 			
+			/*
 			std::cout << "Node: ["
 				<< mOrigin.x() << ", "
 				<< mOrigin.y() << ", "
 				<< mOrigin.z() << "]: "
 				<< DenseNum << "\tHas been deleted"
 				<< std::endl;
-			
+			*/
 		}
 	}
 	if (DenseNum == NUM_VALUES) {

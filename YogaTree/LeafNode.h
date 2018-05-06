@@ -51,6 +51,14 @@ public:
 	~LeafNode() { delete[] voxelStats; }
 
 	bool deAllocate() {
+		/*
+		std::cout << "LeafNode: ["
+			<< mOrigin[0] << "->" << (mOrigin[0] + DIM) <<", "
+			<< mOrigin[1] << "->" << (mOrigin[1] + DIM) << ", "
+			<< mOrigin[2] << "->" << (mOrigin[2] + DIM) << "]"
+			<< "\t has been deleted" << std::endl;
+		*/
+
 		if (voxelStats != nullptr) {
 			delete[] voxelStats;
 			voxelStats = nullptr;
