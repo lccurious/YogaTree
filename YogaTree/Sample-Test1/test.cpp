@@ -23,7 +23,7 @@ protected:
 	BinaryTree testTree;
 	RLEVec3Array rawRLEData;
 	TiffIn Reader;
-
+	const BinaryTree::ValueType DenseValue = BinaryTree::DenseValue;
 	/*
 	virtual void TearDown() {
 
@@ -128,4 +128,29 @@ TEST_F(TreeTest, Traverse)
 	testTree.reformTree();
 
 	std::cout << "Voxel Number: " << testTree.mRoot.onVoxelCount() << std::endl;
+}
+
+
+TEST_F(TreeTest, RandomFetch)
+{
+	Coord coord;
+	std::default_random_engine generator;
+	std::uniform_int_distribution<Index> distribX(0, 1000),
+		distribY(0, 1000), distribZ(0, 1000);
+	Index unifyX, unifyY, unifyZ;
+	std::vector<Coord> LightedCoord;
+	for (int i = 0; i < 64000; i++) {
+		unifyX = distribX(generator);
+		unifyY = distribY(generator);
+		unifyZ = distribZ(generator);
+		Coord coord(unifyX, unifyY, unifyZ);
+		LightedCoord.push_back(coord);
+		testTree.Light(coord);
+	}
+
+	
+	for (auto iter : LightedCoord)
+	{
+		EXPECT_EQ(DenseValue, testTree.fetchValue(iter));
+	}
 }

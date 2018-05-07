@@ -22,6 +22,8 @@ public:
     using ValueType = Byte;
     using Tile = ValueType;
     using BuildType = typename ChildType::BuildType;
+	static const ValueType EmptyValue = ChildType::EmptyValue;
+	static const ValueType DenseValue = ChildType::DenseValue;
 
     static const Index LEVEL = 1 + ChildType::LEVEL;
 
@@ -134,6 +136,18 @@ public:
     /// @return An Index32.
 
     Index32 leafCount() const;
+
+	ValueType fetchValue(Coord coord) {
+		MapCIter fetchCIter;
+		fetchCIter = findCoord(coord);
+		if (fetchCIter != mTable.end()) {
+			if (fetchCIter->second.child->isDense()) {
+				return DenseValue;
+			}
+			return fetchCIter->second.child->fetchValue(coord);
+		}
+		return EmptyValue;
+	}
 
 	void reformRoot();
 

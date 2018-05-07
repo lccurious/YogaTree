@@ -55,6 +55,9 @@ public:
 
     static const Index DEPTH = RootNodeType::LEVEL + 1;
 
+	static const ValueType EmptyValue = RootNodeType::EmptyValue;
+	static const ValueType DenseValue = RootNodeType::DenseValue;
+
     Tree() {}
     ~Tree();
 
@@ -84,6 +87,8 @@ public:
 	/// @date 2018/5/2
 
 	void reformTree();
+
+	ValueType fetchValue(Coord coord) { return mRoot.fetchValue(coord); }
 
     //
     // Statistics

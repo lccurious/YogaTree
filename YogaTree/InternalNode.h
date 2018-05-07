@@ -20,6 +20,9 @@ public:
     using UnionType = NodeUnion<ValueType, ChildNodeType>;
     using SiblingInternalNodeType = InternalNode<LeafNodeType, Log2Dim>;
 
+	static const ValueType EmptyValue = ChildNodeType::EmptyValue;
+	static const ValueType DenseValue = ChildNodeType::DenseValue;
+
     /// Borrow from OpenVDB
     static const Index
         LOG2DIM     = Log2Dim,
@@ -96,6 +99,17 @@ public:
 			return true;
 		}
 		return false;
+	}
+
+	ValueType fetchValue(Coord coord) {
+		Index32 n = coordToOffset(coord);
+		if (mNodes[n].getChild() != nullptr) {
+			if (mNodes[n].getChild()->isDense()) {
+				return DenseValue;
+			}
+			return mNodes[n].getChild()->fetchValue(coord);
+		}
+		return EmptyValue;
 	}
 
 	/// check the node dense status and subsitude the dense node with constant

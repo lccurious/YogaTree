@@ -23,6 +23,9 @@ public:
     using LeafNodeType = LeafNode<ValueType, Log2Dim>;
     using Ptr = SharedPtr<LeafNode>;
 
+	static const ValueType EmptyValue = ValueType(0);
+	static const ValueType DenseValue = ValueType(1);
+
     static const Index
         LOG2DIM     = Log2Dim,
         TOTAL       = Log2Dim,
@@ -155,6 +158,15 @@ public:
 		return onVoxelNum == sSize; 
 	}
 
+	ValueType fetchValue(Coord coord) {
+		Index fetchOffset = coordToOffset(coord);
+		uint8 xAxis = (coord.x() & ((1u << sLog2X) - 1u));
+
+		if (voxelStats[(fetchOffset >> sLog2X)] & (1u << xAxis)) {
+			return DenseValue;
+		}
+		return EmptyValue;
+	}
 
     /// It the LeafNode here is Empty then subsititude pointer in InternalNode
     /// with one background value
