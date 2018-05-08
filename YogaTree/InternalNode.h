@@ -119,6 +119,8 @@ private:
     int onVoxelNum = 0;
     int offVoxelNum = 0;
     int voxelNum = 0;
+	Index64 Numerator = 0;
+	Index64 Denominator = 0;
     Index32 onLeafCount = 0;
 	Index32 DenseNum = 0;
 	// No need to change because voxel represented by bool
@@ -265,6 +267,8 @@ inline int InternalNode<ChildT, Log2Dim>::Light(Coord xyz)
 		deltaVoxelNum = child->Light(xyz);
 		if (deltaVoxelNum) {
 			onVoxelNum += deltaVoxelNum;
+			Denominator += deltaVoxelNum;
+			Numerator += xyz.x();
 			return deltaVoxelNum;
 		}
 	} 
@@ -277,6 +281,8 @@ inline int InternalNode<ChildT, Log2Dim>::Light(Coord xyz)
 		deltaVoxelNum = child->Light(xyz);
 		if (deltaVoxelNum) {
 			onVoxelNum += deltaVoxelNum;
+			Denominator += deltaVoxelNum;
+			Numerator += xyz.x();
 			return deltaVoxelNum;
 		}
 	}

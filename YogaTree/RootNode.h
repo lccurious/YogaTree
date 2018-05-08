@@ -156,6 +156,8 @@ private:
     unsigned int    voxelNum    = 0;
     Index64			onVoxelNum  = 0;
     unsigned int    offVoxelNum = 0;
+	Index64 Numerator = 0;
+	Index64 Denominator = 0;
 
     ValueType mBackground;
     MapType mTable;
@@ -187,6 +189,8 @@ RootNode<ChildT>::Light(Coord coord)
 		deltaVoxelNum = lChild->Light(coord);
 		if (deltaVoxelNum) {
 			onVoxelNum += deltaVoxelNum;
+			Numerator += coord.x();
+			Denominator += deltaVoxelNum;
 		}
     } else {
         LeafNodeType* tmpLeafNode = new LeafNodeType(coord, 0);
@@ -194,6 +198,8 @@ RootNode<ChildT>::Light(Coord coord)
         addLeaf(tmpLeafNode);
 		if (deltaVoxelNum) {
 			onVoxelNum += deltaVoxelNum;
+			Numerator += coord.x();
+			Denominator += deltaVoxelNum;
 		}
     }
 }

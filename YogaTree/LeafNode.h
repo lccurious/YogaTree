@@ -118,6 +118,8 @@ public:
             onVoxelNum++;
 
 			// printf("+voxelStatus[%d : %d]:\t%X\n", (lightOffset >> sLog2X), xAxis, voxelStats[(lightOffset >> sLog2X)]);
+			Denominator += 1;
+			Numerator += xyz.x();
 
 			return 1;
         }
@@ -199,6 +201,9 @@ private:
 
     unsigned int onVoxelNum = 0;
     unsigned int offset;
+
+	Index64 Numerator = 0;
+	Index64 Denominator = 0;
     T mainKey;
     LeafNodeType* SiblingPtrUp = nullptr;
 
