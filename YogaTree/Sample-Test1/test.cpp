@@ -46,13 +46,64 @@ TEST_F(IOTest, ReadTiff)
 	ASSERT_EQ(0, Reader.toFile("RLECompressed.robj"));
 }
 
-TEST(TREE, RandomLight)
+TEST(RandomLight, 64)
 {
 	BinaryTree testTree;
 	Coord coord;
 	std::default_random_engine generator;
-	std::uniform_int_distribution<Index> distribX(0, 1000),
-		distribY(0, 1000), distribZ(0, 1000);
+	std::uniform_int_distribution<Index> distribX(0, 2000),
+		distribY(0, 2000), distribZ(0, 2000);
+	Index unifyX, unifyY, unifyZ;
+	for (int i = 0; i < 64; i++) {
+		unifyX = distribX(generator);
+		unifyY = distribY(generator);
+		unifyZ = distribZ(generator);
+		Coord coord(unifyX, unifyY, unifyZ);
+		testTree.Light(coord);
+	}
+}
+
+TEST(RandomLight, 640)
+{
+	BinaryTree testTree;
+	Coord coord;
+	std::default_random_engine generator;
+	std::uniform_int_distribution<Index> distribX(0, 2000),
+		distribY(0, 2000), distribZ(0, 2000);
+	Index unifyX, unifyY, unifyZ;
+	for (int i = 0; i < 640; i++) {
+		unifyX = distribX(generator);
+		unifyY = distribY(generator);
+		unifyZ = distribZ(generator);
+		Coord coord(unifyX, unifyY, unifyZ);
+		testTree.Light(coord);
+	}
+}
+
+TEST(RandomLight, 6400)
+{
+	BinaryTree testTree;
+	Coord coord;
+	std::default_random_engine generator;
+	std::uniform_int_distribution<Index> distribX(0, 2000),
+		distribY(0, 2000), distribZ(0, 2000);
+	Index unifyX, unifyY, unifyZ;
+	for (int i = 0; i < 6400; i++) {
+		unifyX = distribX(generator);
+		unifyY = distribY(generator);
+		unifyZ = distribZ(generator);
+		Coord coord(unifyX, unifyY, unifyZ);
+		testTree.Light(coord);
+	}
+}
+
+TEST(RandomLight, 64000)
+{
+	BinaryTree testTree;
+	Coord coord;
+	std::default_random_engine generator;
+	std::uniform_int_distribution<Index> distribX(0, 2000),
+		distribY(0, 2000), distribZ(0, 2000);
 	Index unifyX, unifyY, unifyZ;
 	for (int i = 0; i < 64000; i++) {
 		unifyX = distribX(generator);
@@ -62,6 +113,41 @@ TEST(TREE, RandomLight)
 		testTree.Light(coord);
 	}
 }
+
+TEST(RandomLight, 640000)
+{
+	BinaryTree testTree;
+	Coord coord;
+	std::default_random_engine generator;
+	std::uniform_int_distribution<Index> distribX(0, 2000),
+		distribY(0, 2000), distribZ(0, 2000);
+	Index unifyX, unifyY, unifyZ;
+	for (int i = 0; i < 640000; i++) {
+		unifyX = distribX(generator);
+		unifyY = distribY(generator);
+		unifyZ = distribZ(generator);
+		Coord coord(unifyX, unifyY, unifyZ);
+		testTree.Light(coord);
+	}
+}
+
+TEST(RandomLight, 6400000)
+{
+	BinaryTree testTree;
+	Coord coord;
+	std::default_random_engine generator;
+	std::uniform_int_distribution<Index> distribX(0, 2000),
+		distribY(0, 2000), distribZ(0, 2000);
+	Index unifyX, unifyY, unifyZ;
+	for (int i = 0; i < 6400000; i++) {
+		unifyX = distribX(generator);
+		unifyY = distribY(generator);
+		unifyZ = distribZ(generator);
+		Coord coord(unifyX, unifyY, unifyZ);
+		testTree.Light(coord);
+	}
+}
+
 
 TEST_F(TreeTest, RegisteKey)
 {
