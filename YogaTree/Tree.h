@@ -90,6 +90,8 @@ public:
 
 	ValueType fetchValue(Coord coord) { return mRoot.fetchValue(coord); }
 
+	int saveTo(const char* filename);
+
     //
     // Statistics
     //
@@ -124,6 +126,17 @@ void Tree<_RootNodeType>::reformTree()
 {
 	// TODO: add iteration method to check all node registed in tree, subsitude with constant
 	mRoot.reformRoot();
+}
+
+template<typename _RootNodeType>
+int Tree<_RootNodeType>::saveTo(const char* filename)
+{
+	std::ofstream outStream(filename, std::ios::out | std::ios::binary);
+	mRoot.saveTo(outStream);
+
+	outStream.close();
+
+	return 0;
 }
 
 /// @brief Tree3<T, N1, N2>::Type is the type of a three-level tree

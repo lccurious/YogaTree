@@ -134,6 +134,8 @@ public:
     /// @date 2018/5/2
     ///
     /// @return An Index32.
+    
+	int saveTo(std::ofstream &outStream);
 
     Index32 leafCount() const;
 
@@ -271,6 +273,20 @@ RootNode<ChildT>::addLeaf(LeafNodeType* leaf)
 		setChild(iter, *child);
     }
     child->addLeaf(leaf);
+}
+
+template<typename ChildType>
+int RootNode<ChildType>::saveTo(std::ofstream &outStream)
+{	
+	// TODO:RootNode iterate Whole data
+	for (MapCIter i = mTable.begin(), e = mTable.end(); i != e; ++i) {
+		if (isChild(i)) {
+			std::cout << "writing: " << std::endl;
+			// TODO: fix outstream deliver
+			// getChild(i).saveTo(outStream);
+		}
+	}
+	return 0;
 }
 
 template<typename ChildT>

@@ -191,6 +191,8 @@ public:
 	/// parent node
 	int reform();
 
+	int saveTo(std::ofstream &outStream);
+
 protected:
     ///
     /// \brief mOrigin is global index of this Leaf
@@ -243,6 +245,29 @@ inline LeafNode<T, Log2Dim>::LeafNode(const Coord & coord, const ValueType & val
 template<typename T, Index Log2Dim>
 int LeafNode<T, Log2Dim>::reform()
 {
+	return 0;
+}
+
+template<typename T, Index Log2Dim>
+int LeafNode<T, Log2Dim>::saveTo(std::ofstream & outStream)
+{
+	// TODO:LeafNode write out method
+	if (!outStream.is_open()) {
+		std::cerr << "File stream not open";
+		return -1;
+	}
+	if (this->isDense()) {
+		outStream << "D:" << mOrigin[0] << " "
+			<< mOrigin[1] << " "
+			<< mOrigin[2] << "\t";
+	}
+	else
+	{
+		outStream << "P:" << mOrigin[0] << " "
+			<< mOrigin[1] << " "
+			<< mOrigin[2] << ":";
+		for ()
+	}
 	return 0;
 }
 

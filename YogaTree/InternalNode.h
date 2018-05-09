@@ -115,6 +115,8 @@ public:
 	/// check the node dense status and subsitude the dense node with constant
 	int reform();
 
+	int saveTo(std::ofstream &outStream);
+
 private:
     int onVoxelNum = 0;
     int offVoxelNum = 0;
@@ -344,6 +346,26 @@ int InternalNode<_ChildNodeType, Log2Dim>::reform()
 	}
 	if (DenseNum == NUM_VALUES) {
 		ISDENSE = true;
+	}
+	return 0;
+}
+
+template<typename _ChildNodeType, Index Log2Dim>
+int InternalNode<_ChildNodeType, Log2Dim>::saveTo(std::ofstream & outStream)
+{
+	if (!outStream.is_open()) {
+		std::cerr << "File not open!";
+	}
+	if (this->isDense()) {
+	// TOD:Add print method
+	}
+	else
+	{
+		for (UnionType iter : mNodes) {
+			if (iter.mChild != nullptr) {
+				iter.mChlid->saveTo(outStream);
+			}
+		}
 	}
 	return 0;
 }
