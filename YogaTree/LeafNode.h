@@ -249,7 +249,7 @@ int LeafNode<T, Log2Dim>::reform()
 }
 
 template<typename T, Index Log2Dim>
-int LeafNode<T, Log2Dim>::saveTo(std::ofstream & outStream)
+int LeafNode<T, Log2Dim>::saveTo(std::ofstream &outStream)
 {
 	// TODO:LeafNode write out method
 	if (!outStream.is_open()) {
@@ -266,7 +266,10 @@ int LeafNode<T, Log2Dim>::saveTo(std::ofstream & outStream)
 		outStream << "P:" << mOrigin[0] << " "
 			<< mOrigin[1] << " "
 			<< mOrigin[2] << ":";
-		for ()
+		for (int i = 0; i < voxelStatsSize; i++) {
+			outStream << std::hex << voxelStats[i];
+		}
+		outStream << std::endl;
 	}
 	return 0;
 }

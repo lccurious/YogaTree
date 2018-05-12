@@ -351,7 +351,7 @@ int InternalNode<_ChildNodeType, Log2Dim>::reform()
 }
 
 template<typename _ChildNodeType, Index Log2Dim>
-int InternalNode<_ChildNodeType, Log2Dim>::saveTo(std::ofstream & outStream)
+int InternalNode<_ChildNodeType, Log2Dim>::saveTo(std::ofstream &outStream)
 {
 	if (!outStream.is_open()) {
 		std::cerr << "File not open!";
@@ -361,9 +361,9 @@ int InternalNode<_ChildNodeType, Log2Dim>::saveTo(std::ofstream & outStream)
 	}
 	else
 	{
-		for (UnionType iter : mNodes) {
-			if (iter.mChild != nullptr) {
-				iter.mChlid->saveTo(outStream);
+		for (int i = 0; i < NUM_VALUES; i++) {
+			if (mNodes[i].getChild() != nullptr) {
+				mNodes[i].getChild()->saveTo(outStream);
 			}
 		}
 	}

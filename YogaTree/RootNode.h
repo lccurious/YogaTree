@@ -279,11 +279,14 @@ template<typename ChildType>
 int RootNode<ChildType>::saveTo(std::ofstream &outStream)
 {	
 	// TODO:RootNode iterate Whole data
-	for (MapCIter i = mTable.begin(), e = mTable.end(); i != e; ++i) {
+	for (MapIter i = mTable.begin(), e = mTable.end(); i != e; ++i) {
 		if (isChild(i)) {
-			std::cout << "writing: " << std::endl;
-			// TODO: fix outstream deliver
-			// getChild(i).saveTo(outStream);
+			std::cout << "writing RootNode: [" 
+				<< i->first[0] << ", "
+				<< i->first[1] << ", "
+				<< i->first[2] << "]"
+				<< std::endl;
+			getChild(i).saveTo(outStream);
 		}
 	}
 	return 0;

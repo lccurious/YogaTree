@@ -131,7 +131,8 @@ void Tree<_RootNodeType>::reformTree()
 template<typename _RootNodeType>
 int Tree<_RootNodeType>::saveTo(const char* filename)
 {
-	std::ofstream outStream(filename, std::ios::out | std::ios::binary);
+	std::ofstream outStream;
+	outStream.open(filename, std::ios::out | std::ios::binary);
 	mRoot.saveTo(outStream);
 
 	outStream.close();
