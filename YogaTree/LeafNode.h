@@ -162,7 +162,7 @@ public:
 
 	ValueType fetchValue(Coord coord) {
 		Index fetchOffset = coordToOffset(coord);
-		uint8 xAxis = (coord.x() & ((1u << sLog2X) - 1u));
+		Index xAxis = (coord.x() & ((1u << sLog2X) - 1u));
 
 		if (voxelStats[(fetchOffset >> sLog2X)] & (1u << xAxis)) {
 			return DenseValue;

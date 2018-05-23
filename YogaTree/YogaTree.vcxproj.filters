@@ -33,12 +33,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Coord.h">
       <Filter>头文件\util</Filter>
     </ClInclude>
@@ -52,9 +46,6 @@
       <Filter>头文件\util</Filter>
     </ClInclude>
     <ClInclude Include="Name.h">
-      <Filter>头文件\util</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeMasks.h">
       <Filter>头文件\util</Filter>
     </ClInclude>
     <ClInclude Include="NodeUnion.h">
@@ -84,11 +75,11 @@
     <ClInclude Include="YogaTree.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Accessor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="YogaTree.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

@@ -5,7 +5,6 @@
 #include "../InternalNode.h"
 #include "../RootNode.h"
 #include "../NodeUnion.h"
-#include "../NodeMasks.h"
 #include "../Tree.h"
 #include "../TiffIn.h"
 #include "../YogaTree.h"
