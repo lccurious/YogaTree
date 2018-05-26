@@ -193,6 +193,10 @@ public:
 
 	int saveTo(std::ofstream &outStream);
 
+	void stealNodes(ModelSkeleton& stealArray);
+
+	bool isVisited() { return _isVisited; }
+
 protected:
     ///
     /// \brief mOrigin is global index of this Leaf
@@ -230,6 +234,8 @@ private:
 
     // indicate the voxel cube state
     uint8_t* voxelStats;
+
+	bool _isVisited = false;
 };
 
 template<typename T, Index Log2Dim>
@@ -272,6 +278,38 @@ int LeafNode<T, Log2Dim>::saveTo(std::ofstream &outStream)
 		outStream << std::endl;
 	}
 	return 0;
+}
+
+template<typename T, Index Log2Dim>
+inline void LeafNode<T, Log2Dim>::stealNodes(ModelSkeleton & stealArray)
+{
+#ifdef _DEBUG
+	std::cout << "LeafNode: [" << mOrigin[0] << ", " << mOrigin[1]
+		<< ", " << mOrigin[2] << "]: ";
+#endif // _DEBUG
+	if (this->isDense()) {
+#ifdef _DEBUG
+		std::cout << "Is Dense;" << std::endl;
+#endif // _DEBUG
+		NodeMat AMat;
+		AMat.x = mOrigin[0];
+		AMat.y = mOrigin[1];
+		AMat.z = mOrigin[2];
+		AMat.Dim = this->TOTAL;
+		stealArray.skeleton.push_back(AMat);
+	}
+	else
+	{
+#ifdef _DEBUG
+		std::cout << "Not Dense;" << std::endl;
+#endif // _DEBUG
+		NodeDetail Adetail;
+		Adetail.x = mOrigin[0];
+		Adetail.y = mOrigin[1];
+		Adetail.z = mOrigin[2];
+		memcpy(Adetail.details, voxelStats, voxelStatsSize * sizeof(uint8_t));
+		stealArray.details.push_back(Adetail);
+	}
 }
 
 template<typename T, Index Log2Dim>

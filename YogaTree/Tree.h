@@ -103,9 +103,26 @@ public:
     // Data members
     //
     RootNodeType mRoot;
+
+	//
+	// IO compress
+	// 
+	void stealNodes(ModelSkeleton& stealArray) { mRoot.stealNodes(stealArray); };
+
+	/// Decode Skel datatype and Detail datatype, and these 2 file will appear
+	/// in same time. the extention will be added automatically
+	///
+	/// @author Peo
+	/// @date 2018/5/26
+	///
+	/// @param fileSkel The file skel.
+
+	void decodeSD(const char* fileSkel);
+
 private:
     LeafNodeType* LeafNodeGardPtr;
     RootNodeType* RootNodePtr;
+	ModelSkeleton treeModel;
 };
 
 template<typename _RootNodeType>
@@ -124,7 +141,6 @@ int Tree<_RootNodeType>::printAllCoord()
 template<typename _RootNodeType>
 void Tree<_RootNodeType>::reformTree()
 {
-	// TODO: add iteration method to check all node registed in tree, subsitude with constant
 	mRoot.reformRoot();
 }
 
@@ -138,6 +154,44 @@ int Tree<_RootNodeType>::saveTo(const char* filename)
 	outStream.close();
 
 	return 0;
+}
+
+template<typename _RootNodeType>
+void Tree<_RootNodeType>::decodeSD(const char * fileSkel)
+{
+#ifdef _DEBUG
+	std::cout << "============ DEBUG decodeSD: =============" << std::endl;
+#endif
+	char skelName[50];
+	char detailName[50];
+	sprintf(skelName, "%s.skel", fileSkel);
+	sprintf(detailName, "%s.detail", fileSkel);
+	std::ifstream skelIn(skelName, std::ios::in | std::ios::binary);
+	std::ifstream detailIn(detailName, std::ios::in | std::ios::binary);
+	NodeMat AMat;
+	NodeDetail ADetail;
+	while (!skelIn.eof()) {
+		skelIn.read((char*)&AMat, sizeof(NodeMat));
+		treeModel.skeleton.push_back(AMat);
+#ifdef _DEBUG
+		std::cout << "[ " << AMat.x << ", " << AMat.y << ", "
+			<< AMat.z << "]: " << AMat.Dim << std::endl;
+#endif // _DEBUG
+
+	}
+	while (!detailIn.eof()) {
+		detailIn.read((char*)&ADetail, sizeof(NodeDetail));
+		treeModel.details.push_back(ADetail);
+#ifdef _DEBUG
+		std::cout << "[ " << ADetail.x << ", " << ADetail.y << ", "
+			<< ADetail.z << "]: ";
+		for (int i = 0; i < 64; i++) {
+			printf("%x", ADetail.details[i]);
+		}
+		std::cout << std::endl;
+#endif // _DEBUG
+
+	}
 }
 
 /// @brief Tree3<T, N1, N2>::Type is the type of a three-level tree

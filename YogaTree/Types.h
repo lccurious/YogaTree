@@ -27,4 +27,25 @@ struct RLEVec3{
     int x[2];
 };
 
+
+struct NodeMat {
+	Index x;
+	Index y;
+	Index z;
+	Index Dim;
+};
+
+struct NodeDetail {
+	Index x, y, z;
+	uint8_t details[64];
+};
+
+using NodeMats = std::vector<NodeMat>;
+using NodeDetails = std::vector<NodeDetail>;
+
+struct ModelSkeleton {
+	NodeMats skeleton;
+	NodeDetails details;
+};
+
 using RLEVec3Array = typename std::vector<RLEVec3>;

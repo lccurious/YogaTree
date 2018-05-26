@@ -117,6 +117,10 @@ public:
 
 	int saveTo(std::ofstream &outStream);
 
+	bool isVisited() { return _isVisted; }
+
+	void stealNodes(ModelSkeleton& stealArray);
+
 private:
     int onVoxelNum = 0;
     int offVoxelNum = 0;
@@ -138,6 +142,7 @@ private:
         ValueType      valueFill;
     }   mInternalDAT[NUM_VALUES];*/
     SiblingInternalNodeType* SiblingInternalNodePtr = nullptr;
+	bool _isVisted = false;
 
 };
 
@@ -328,8 +333,8 @@ int InternalNode<_ChildNodeType, Log2Dim>::reform()
 			// TODO:delete the ChildNode And replace with constant.
 			// mNodes[i].getChild()->printNode();
 			mNodes[i].getChild()->deAllocate();
-			delete mNodes[i].getChild();
-			mNodes[i].setChild(nullptr);
+			// delete mNodes[i].getChild();
+			// mNodes[i].setChild(nullptr);
 			// mNodes[i].setValue(LIGHT_VALUE);
 			
 			DenseNum++;
@@ -368,4 +373,38 @@ int InternalNode<_ChildNodeType, Log2Dim>::saveTo(std::ofstream &outStream)
 		}
 	}
 	return 0;
+}
+
+template<typename _ChildNodeType, Index Log2Dim>
+inline void InternalNode<_ChildNodeType, Log2Dim>::stealNodes(ModelSkeleton & stealArray)
+{
+	NodeMat AMat;
+#ifdef _DEBUG
+	std::cout << "InternalNode: [ " << mOrigin[0] << ", " << mOrigin[1]
+		<< ", " << mOrigin[2] << "]: ";
+#endif // _DEBUG
+
+	if (this->isDense()) {
+#ifdef _DEBUG
+		std::cout << "is Dense;" << std::endl;
+#endif // _DEBUG
+
+		AMat.x = mOrigin[0];
+		AMat.y = mOrigin[1];
+		AMat.z = mOrigin[2];
+		AMat.Dim = this->TOTAL;
+		stealArray.skeleton.push_back(AMat);
+	}
+	else
+	{
+#ifdef _DEBUG
+		std::cout << "Not Dense;" << std::endl;
+#endif // _DEBUG
+
+		for (int i = 0; i < NUM_VALUES; i++) {
+			if (mNodes[i].getChild() != nullptr) {
+				mNodes[i].getChild()->stealNodes(stealArray);
+			}
+		}
+	}
 }

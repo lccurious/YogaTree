@@ -137,6 +137,8 @@ public:
     
 	int saveTo(std::ofstream &outStream);
 
+	void stealNodes(ModelSkeleton& stealArray);
+
     Index32 leafCount() const;
 
 	ValueType fetchValue(Coord coord) {
@@ -278,8 +280,8 @@ RootNode<ChildT>::addLeaf(LeafNodeType* leaf)
 template<typename ChildType>
 int RootNode<ChildType>::saveTo(std::ofstream &outStream)
 {	
-	// TODO:RootNode iterate Whole data
 	for (MapIter i = mTable.begin(), e = mTable.end(); i != e; ++i) {
+#ifdef _DEBUG
 		if (isChild(i)) {
 			std::cout << "writing RootNode: [" 
 				<< i->first[0] << ", "
@@ -288,8 +290,28 @@ int RootNode<ChildType>::saveTo(std::ofstream &outStream)
 				<< std::endl;
 			getChild(i).saveTo(outStream);
 		}
+#endif // _DEBUG
+
 	}
 	return 0;
+}
+
+template<typename ChildType>
+inline void RootNode<ChildType>::stealNodes(ModelSkeleton & stealArray)
+{
+	for (MapIter i = mTable.begin(), e = mTable.end(); i != e; ++i) {
+		if (isChild(i)) {
+#ifdef _DEBUG
+			std::cout << "writing RootNode: ["
+				<< i->first[0] << ", "
+				<< i->first[1] << ", "
+				<< i->first[2] << "]"
+				<< std::endl;
+#endif // _DEBUG
+			getChild(i).stealNodes(stealArray);
+
+		}
+	}
 }
 
 template<typename ChildT>
@@ -323,10 +345,12 @@ void RootNode<ChildType>::reformRoot()
 			std::cout << "Leaf Count: " << i->second.child->leafCount() << std::endl;
 			*/
 			i->second.child->reform();
+#ifdef _DEBUG
 			if (i->second.child->isDense()) {
 				i->second.child->deAllocate();
 				std::cout << "InternalNode has been delete" << std::endl;
 			}
+#endif // _DEBUG
 		}
 	}
 }
